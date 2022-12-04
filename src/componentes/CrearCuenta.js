@@ -176,7 +176,7 @@ const CrearCuenta = () => {
                />
    
          <Link
-           className="block text-center my-5 "
+           className="bg-sky-600 hover:bg-sky-800 mb-5 w-full py-3 block text-white text-center my-5 roundedblock text-center my-5 "
          to={"/"}
          >
            Regresar
