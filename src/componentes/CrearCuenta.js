@@ -27,7 +27,7 @@ const CrearCuenta = () => {
   const crearCuenta = async () =>{
     // los dos password deben ser iguales
     if(password !== confirmar){
-      console.log('diferentes');
+      console.log('diferntes');
       const mensaje = "Las contraseñas son diferentes.";
       swal({
         title:'Error',
@@ -51,7 +51,7 @@ const CrearCuenta = () => {
         password: usuario.password
       }
       console.log(data);
-      const response = await crud.POST('/api/usuarios', data);
+      const response = await crud.POST(`/api/usuarios`, data);
       const mensaje = response.msg;
       //console.log(mensaje);
       if(mensaje === "El usuario ya existe"){
@@ -116,7 +116,7 @@ const CrearCuenta = () => {
       <main className='container mx-auto mt-5 md:mt-20 p-5 md:flex md:justify-center'>
       <div className='md:w-2/3 lg:w-2/5'>
       <h1 className="inline bg-gradient-to-r  from-sky-600 via-sky-800 to-sky-900 bg-clip-text font-display text-5xl tracking-tight text-transparent">
-         G12 Iniciar sesión Ecommerce
+       Crear Cuenta Ecommerce
        </h1>
         <form 
           className="my-10 bg-white shadow rounded-lg p-10"
@@ -176,7 +176,7 @@ const CrearCuenta = () => {
                />
    
          <Link
-           className="bg-sky-600 hover:bg-sky-800 mb-5 w-full py-3 block text-white text-center my-5 roundedblock text-center my-5 "
+           className="bg-sky-600 hover:bg-sky-800 mb-5 w-full py-3 block text-white text-center my-5 rounded block text-center my-5 "
          to={"/"}
          >
            Regresar

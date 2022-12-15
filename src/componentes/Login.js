@@ -66,7 +66,12 @@ const Login = () => {
           }
         });
       } else{
-         //redireccionar nuevamente a la pagina de login
+        const jwt = response.token;
+
+        //guardar la informacion en el localStorage
+        localStorage.setItem('token', jwt);
+        
+        //redireccionar nuevamente a la pagina de login
         navigate("/admin");
       } 
       
@@ -83,7 +88,7 @@ const Login = () => {
    <main className='container mx-auto mt-5 md:mt-20 p-5 md:flex md:justify-center'>
    <div className='md:w-2/3 lg:w-2/5'>
    <h1 className="inline bg-gradient-to-r from-indigo-200 to-indigo-200 bg-clip-text font-display text-5xl tracking-tight text-transparent">
-      G12 Iniciar sesión Ecommerce 
+      Iniciar sesión Ecommerce
     </h1>
     <form 
       onSubmit={onSubmit}
@@ -119,7 +124,7 @@ const Login = () => {
       />
 
       <Link
-        className="bg-sky-600 hover:bg-sky-800 mb-5 w-full py-3 block text-white text-center my-5 rounded "
+        className="bg-sky-600 hover:bg-sky-800 mb-5 w-full py-3 block text-white text-center my-5 rounded"
       to={"/crear-cuenta"}
       >
         Crear Cuenta
