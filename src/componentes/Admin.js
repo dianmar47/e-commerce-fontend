@@ -1,5 +1,9 @@
-import React, { useEffect } from "react";
-import { Link, useNavigate } from 'react-router-dom';
+import React, { useEffect, useState } from "react";
+import { useNavigate } from 'react-router-dom';
+import crud from "../conexiones/crud";
+import Header from "./Header";
+import Sidebar from "./Sidebar";
+import swal from 'sweetalert';
 
 const Admin = () => {
   
@@ -15,37 +19,118 @@ const Admin = () => {
 
     }
     autenticarUsuario()
-  },[]);//[] se ejecuta solo una vez
+  },[navigate]);//[] se ejecuta solo una vez
   
   
+  const [categoria, setCategoria] = useState([]);
   
-  
-  
-  const cerrarSesion = () =>{
-    localStorage.removeItem("token");
-    navigate("/");
+  const cargarCategorias = async () => {
+    const response = await crud.GET(`/api/categorias`);
+    console.log(response);
+    setCategoria(response.categoria);
+  }
+
+  useEffect(() => {
+    cargarCategorias();
+  },[]);
+
+
+  const borrarCategoria = async (e, idCategoria) => {
+    e.preventDefault();
+    const response = await crud.DELETE(`/api/categorias/${idCategoria}`);
+    console.log(response.msg);
+    const mensaje = response.msg;
+    if(mensaje ==="categoria eliminada" ){
+      
+      swal({
+        title:'Información',
+        text: mensaje,
+        icon: 'success',
+      buttons:{
+        confirm:{
+          text: 'OK',
+          value: true,
+          visible: true,
+          className: 'btn btn-primary',
+          closeModal: true
+          }
+        }
+        
+      });
+    
+    }
+   
+    window.location.reload();
   }
 
 
-  return (
-   <main className='container mx-auto mt-5 md:mt-20 p-5 md:flex md:justify-center'>
-   <div className='md:w-2/3 lg:w-2/5'>
-   <h1 className="inline bg-gradient-to-r from-indigo-200 via-violet-700 to-indigo-200 bg-clip-text font-display text-5xl tracking-tight text-transparent">
-      Panel de Administrador 4
-    </h1>
-
-    <input
-      type='submit'
-      value="Cerrar Sesión"
-      className="bg-violet-600 mb-5 w-full py-3 text-white uppercase font-bold rounded hover:cursor-pointer hover:bg-violet-300 transition-colors"
-      onClick={cerrarSesion}
-    />
-   
-
-
-   </div>
+  const actualizarCategoria = async ( idCategoria) =>{
     
-   </main>
+    const response = await crud.PUT(`/api/categorias/${idCategoria}`);
+
+  }  
+  
+
+  return (
+    <>
+      <Header/>
+  <div className="md:flex md:min-h-screen">
+        <Sidebar/>
+    <main className="flex-1">
+        <h1 className="inline bg-gradient-to-r from-indigo-200 to-indigo-200 bg-clip-text font-display text-5xl tracking-tight text-transparent">
+      Lista de categorias
+    </h1>
+      
+    <div>
+      <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+        <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+          <tr >
+            <th scope="col" className="py-3 px-6">Imagen</th>
+            <th scope="col" className="py-3 px-6">Nombre</th>
+            <th scope="col" className="py-3 px-6 ">Id</th>
+            <th scope="col" className="py-3 px-6 flex justify-center">Opciones</th>
+            
+          </tr>
+        </thead>    
+        <tbody className="bg-white">
+          {
+            categoria.map(
+              item => 
+              <tr key={item._id} className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                <td><img src={item.imagen} width="150" height="150"></img></td>
+                <td>{item.nombre}</td>
+                <td>{item._id}</td>
+                <td className="py-3 px-6">
+                <input 
+                type="submit"
+                value="Eliminar"
+                className="font-medium mb-5 w-full text-blue-600 dark:text-blue-500 py-5 rounded hover:underline hover:bg-white"
+               onClick={(e) => borrarCategoria(e, item._id)}
+            />
+             <input 
+                type="submit"
+                value="Actualizar"
+                className="font-medium mb-5 w-full text-blue-600 dark:text-blue-500 py-5 rounded hover:underline hover:bg-white"
+                onClick={actualizarCategoria(item._id)}
+            />
+             <input 
+                type="submit"
+                value="Crear Producto"
+                className="font-medium mb-5 w-full text-blue-600 dark:text-blue-500 py-5 rounded hover:underline hover:bg-white"
+               
+            />
+                </td>
+              </tr>
+            )
+          }
+
+        </tbody>
+
+      </table>
+    </div>
+  </main>
+</div>
+    </>
     );
 }
 
