@@ -8,12 +8,21 @@ const Sidebar = () => {
             
             
              <Link
-                className="bg-sky-600 hover:bg-sky-800 mb-5 w-full py-3 px-3 text-white uppercase font-bold rounded border-white hover:cursor-pointer transition-colors"
+                className="bg-violet-600 w-full p-3 text-white uppercase font-bold mt-5 text-center rounded-lg"
                 to={"/crear-categoria"}
             >
         Crear Categoria
       </Link>
 
+      <div className="py-10">
+      <Link
+                className="bg-violet-600 w-full p-3 text-white uppercase font-bold mt-5 text-center rounded-lg"
+                to={"/admin"}
+            >
+        Admin Categorias
+      </Link>
+
+      </div>
 
       
       
