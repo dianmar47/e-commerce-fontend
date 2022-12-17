@@ -36,40 +36,42 @@ const Admin = () => {
 
 
   const borrarCategoria = async (e, idCategoria) => {
-    e.preventDefault();
-    const response = await crud.DELETE(`/api/categorias/${idCategoria}`);
-    console.log(response.msg);
-    const mensaje = response.msg;
-    if(mensaje ==="categoria eliminada" ){
-      
-      swal({
-        title:'Información',
-        text: mensaje,
-        icon: 'success',
-      buttons:{
-        confirm:{
-          text: 'OK',
-          value: true,
-          visible: true,
-          className: 'btn btn-primary',
-          closeModal: true
-          }
+    swal({
+      title: "Estas seguro de eliminar esta categoria?",
+      text: "Una vez eliminado, no podra recuperar esta categoria",
+      icon: "warning",
+      buttons: true,
+      dangerMode: true,
+    })
+    .then((willDelete) => {
+      if (willDelete) {
+        e.preventDefault();
+        const response = crud.DELETE(`/api/categorias/${idCategoria}`);
+        //console.log(response.msg);
+        const mensaje = response.msg;
+        if(response){
+          swal("Tu categoria a sido eliminada correctamente", {
+            icon: "success",
+          });
         }
-        
-      });
-    
-    }
+        cargarCategorias();
+      } else {
+        swal("se cancelo la acción");
+      }
+    });
    
-    window.location.reload();
   }
-
 
   const actualizarCategoria = async ( idCategoria) =>{
     
-    const response = await crud.PUT(`/api/categorias/${idCategoria}`);
+    navigate(`/actualizar-categoria/${idCategoria}`)
 
   }  
-  
+
+  const crearProductos = async (idCategoria) =>{
+    navigate(`/home-productos/${idCategoria}`);
+  }
+
 
   return (
     <>
@@ -111,13 +113,13 @@ const Admin = () => {
                 type="submit"
                 value="Actualizar"
                 className="font-medium mb-5 w-full text-blue-600 dark:text-blue-500 py-5 rounded hover:underline hover:bg-white"
-                onClick={actualizarCategoria(item._id)}
+                onClick={(e) => actualizarCategoria(item._id)}
             />
              <input 
                 type="submit"
                 value="Crear Producto"
                 className="font-medium mb-5 w-full text-blue-600 dark:text-blue-500 py-5 rounded hover:underline hover:bg-white"
-               
+                onClick={(e) => crearProductos(item._id)}
             />
                 </td>
               </tr>
